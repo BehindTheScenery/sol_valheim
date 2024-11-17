@@ -14,15 +14,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import vice.sol_valheim.accessors.PlayerEntityMixinDataAccessor;
 
 @Mixin(CakeBlock.class)
-public class CakeBlockMixin
-{
+public class CakeBlockMixin {
     @Inject(at = @At("HEAD"), method = "eat(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/InteractionResult;", cancellable = true)
     private static void canEatCake(LevelAccessor level, BlockPos pos, BlockState state, Player player, CallbackInfoReturnable<InteractionResult> cir)
     {
         var foodData = ((PlayerEntityMixinDataAccessor) player).sol_valheim$getFoodData();
         var canEat = foodData.canEat(Items.CAKE);
-        if (canEat)
-        {
+        if (canEat) {
             if (level.isClientSide())
                 return;
 

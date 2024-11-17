@@ -1,11 +1,5 @@
 package vice.sol_valheim;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
@@ -20,7 +14,12 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
+public class ModConfig {}
 
+// The config is VERY broken. It's not even close to working. I'm not sure what the original author was trying to do.
+// I'm going to rewrite it from scratch later.
+
+/*
 @Config(name = SOLValheim.MOD_ID)
 @Config.Gui.Background("minecraft:textures/block/stone.png")
 public class ModConfig extends PartitioningSerializer.GlobalData {
@@ -177,3 +176,5 @@ public class ModConfig extends PartitioningSerializer.GlobalData {
         public boolean useLargeIcons = true;
     }
 }
+
+*/

@@ -10,7 +10,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vice.sol_valheim.SOLValheim;
 
-
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = "sol_valheim", value = {Dist.CLIENT}, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEvents {

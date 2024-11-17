@@ -1,16 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "${id}",
+  "id": "sol_valheim",
   "version": "${version}",
-  "name": "${display_name}",
-
-  "description": "",
-  "authors": [],
-  "contact": {},
-
+  "name": "Spice of Life: Valheim Edition Improved",
+  "description": "This is an improved version of SoL: Valheim Edition with more features and fixes.",
+  "authors": [
+    "txnimc", "DenisMasterHerobrine"
+  ],
+  "contact": {
+    "homepage": "https://github.com/BehindTheScenery/sol_valheim",
+    "sources": "https://github.com/BehindTheScenery/sol_valheim"
+  },
   "license": "GNU LGPL 3.0",
-  "icon": "icon.png",
-
+  "icon": "assets/sol_valheim/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -25,8 +27,9 @@
     "sol_valheim-common.mixins.json"
   ],
   "depends": {
-    "minecraft": "${minecraft_version}",
-    "fabricloader": ">=${fabric}",
-    "fabric-api": ">=${fabric_api}"
+    "fabricloader": ">=0.16.9",
+    "minecraft": ">=1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
   }
 }

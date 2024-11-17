@@ -8,19 +8,5 @@ import vice.sol_valheim.extenders.SynchedEntityDataExtender;
 
 @Mixin(SynchedEntityData.class)
 public abstract class SynchedEntityDataMixin implements SynchedEntityDataExtender {
-    #if PRE_CURRENT_MC_1_19_2
-
-    @Override
-    public <T> void set(EntityDataAccessor<T> key, T value, boolean force) {
-        SynchedEntityData thisObject = (SynchedEntityData)(Object)this;
-
-        SynchedEntityData.DataItem<T> dataItem = thisObject.getItem(key);
-        if (force || ObjectUtils.notEqual(value, dataItem.getValue())) {
-            dataItem.setValue(value);
-            thisObject.entity.onSyncedDataUpdated(key);
-            dataItem.setDirty(true);
-            thisObject.isDirty = true;
-        }
-    }
-    #endif
+    // There was 1.19.2 code, we support only 1.20.1+ right now. Deprecated and removed in 1.21.
 }

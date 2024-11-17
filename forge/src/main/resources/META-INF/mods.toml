@@ -1,27 +1,28 @@
-modLoader="javafml"
-loaderVersion = "[${forge},)"
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
 license="GNU LGPL 3.0"
-issueTrackerURL="https://Anthony/sol_valheim/issues"
 
 [[mods]]
-modId = "${id}"
+modId = "sol_valheim"
 version = "${version}"
-displayName = "${display_name}"
-authors = "Me!"
+displayName = "Spice of Life: Valheim Edition Improved"
+authors = ["txnimc", "DenisMasterHerobrine"]
 description = '''
+This is an improved version of SoL: Valheim Edition with more features and fixes.
 '''
-logoFile = "icon.png"
+#logoFile = ""
 
-[[dependencies.${id}]]
+[[dependencies.sol_valheim]]
 modId = "forge"
 mandatory = true
-versionRange = "[${forge},)"
+versionRange = "[47,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.${id}]]
+[[dependencies.sol_valheim]]
 modId = "minecraft"
 mandatory = true
-versionRange = "${minecraft_version}"
+versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"

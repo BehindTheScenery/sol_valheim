@@ -26,10 +26,8 @@ public class FoodDataMixin implements FoodDataPlayerAccessor
     public void sol_valheim$setPlayer(Player player) { sol_valheim$player = player; }
 
     @Inject(at = @At("HEAD"), method = "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;)V")
-    public void onEatFood(Item item, ItemStack stack, CallbackInfo ci)
-    {
-        if (sol_valheim$player == null)
-        {
+    public void onEatFood(Item item, ItemStack stack, CallbackInfo ci) {
+        if (sol_valheim$player == null) {
             System.out.println("sol_valheim$player is null in FoodData, this should never happen!");
             return;
         }

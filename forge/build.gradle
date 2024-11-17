@@ -1,7 +1,11 @@
-
 plugins {
-    id "com.github.johnrengelman.shadow" version "$shadow_version"
-    id "me.modmuss50.mod-publish-plugin"
+    id 'com.github.johnrengelman.shadow'
+}
+
+loom {
+    forge {
+        mixinConfig "sol_valheim.mixins.json"
+    }
 }
 
 architectury {
@@ -9,137 +13,46 @@ architectury {
     forge()
 }
 
-def generatedResources = file("src/generated")
-
 configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
-}
 
-repositories {
-    // mavens for Forge-exclusives
-    maven { url = "https://maven.theillusivec4.top/" } // Curios
-    maven { // Create Forge and Registrate Forge
-        url = "https://maven.tterrag.com/"
-        content {
-            includeGroup("com.tterrag.registrate")
-            includeGroup("com.simibubi.create")
-        }
-    }
-}
-
-loom {
-    forge {
-        //convertAccessWideners = true
-        //extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-        mixinConfig("${archives_base_name}-common.mixins.json", "${archives_base_name}.mixins.json")
-    }
-
-    runs {
-        data {
-            data()
-            name "Forge Datagen"
-
-            programArgs "--all", "--mod", "logic_n_control"
-            vmArg '-Dforge.logging.markers=REGISTRIES'
-            vmArg '-Dforge.logging.console.level=debug'
-            programArgs "--output", "${project.rootProject.file("forge/src/generated/resources")}"
-            programArgs "--existing", "${project.rootProject.file("common/src/main/resources")}"
-            programArgs "--existing-mod", "create"
-            programArgs "--flat"
-        }
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
     }
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge}"
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    forge "net.minecraftforge:forge:$rootProject.forge_version"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
 
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version
+    }
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
-    configurations = [project.configurations.shadowCommon, project.configurations.shade]
-
-    archiveClassifier.set "dev-shadow"
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
 }
 
 remapJar {
     input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier.set null
-}
-
-jar {
-    archiveClassifier.set "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
-}
-
-publishMods {
-    file = remapJar.archiveFile
-    version = "$mod_version-forge-mc$rootProject.minecraft_version"
-    type = STABLE
-    displayName = "$display_name $mod_version Forge $rootProject.minecraft_version"
-    modLoaders.add("forge")
-    changelog = "View changelog at https://github.com/anthxnymc/$modid"
-
-    curseforge {
-        projectId = curseforge_id
-        accessToken = System.getenv("CURSEFORGE_TOKEN")
-        minecraftVersions.add(rootProject.minecraft_version)
-
-        requires {
-            slug = "cloth-config"
-        }
-
-        requires {
-            slug = "architectury-api"
-        }
-    }
-
-    modrinth {
-        projectId = modrinth_id
-        accessToken = System.getenv("MODRINTH_TOKEN")
-        minecraftVersions.add(rootProject.minecraft_version)
-
-        requires {
-            slug = "cloth-config"
-        }
-
-        requires {
-            slug = "architectury-api"
-        }
-    }
-}
-
-publishing {
-    publications {
-        mavenForge(MavenPublication) {
-            artifactId = rootProject.modid + "-" + project.name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
 }

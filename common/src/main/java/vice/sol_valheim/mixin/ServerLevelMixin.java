@@ -11,13 +11,12 @@ import vice.sol_valheim.accessors.PlayerEntityMixinDataAccessor;
 import java.util.function.BooleanSupplier;
 
 @Mixin(ServerLevel.class)
-public class ServerLevelMixin
-{
+public class ServerLevelMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;setDayTime(J)V"), method = "tick")
     public void onSleep(BooleanSupplier hasTimeLeft, CallbackInfo ci)
     {
-        if (!SOLValheim.Config.common.passTicksDuringNight)
-            return;
+//        if (!SOLValheim.Config.common.passTicksDuringNight)
+//            return;
 
         var level = (ServerLevel) (Object) this;
         var dayTime = level.getLevelData().getDayTime();

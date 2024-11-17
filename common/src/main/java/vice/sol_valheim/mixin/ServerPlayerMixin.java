@@ -9,15 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import vice.sol_valheim.accessors.PlayerEntityMixinDataAccessor;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin
-{
+public class ServerPlayerMixin {
     @Inject(at = @At("HEAD"), method = {"completeUsingItem"})
-    public void render(CallbackInfo ci)
-    {
+    public void render(CallbackInfo ci) {
         var player = (ServerPlayer) (Object) this;
         var useItem = player.getUseItem();
-        if (!useItem.isEmpty() && player.isUsingItem() && useItem.getUseAnimation() == UseAnim.DRINK)
-        {
+        if (!useItem.isEmpty() && player.isUsingItem() && useItem.getUseAnimation() == UseAnim.DRINK) {
             ((PlayerEntityMixinDataAccessor) player).sol_valheim$getFoodData().eatItem(useItem.getItem());
         }
     }
